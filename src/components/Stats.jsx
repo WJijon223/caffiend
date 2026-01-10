@@ -50,12 +50,24 @@ export default function Stats() {
         </StatCard>
         <StatCard title="Daily Caffeine">
           <p>
-            <span></span>
+            <span className="stat-text">{stats.daily_caffeine}</span>mg
           </p>
         </StatCard>
-        <StatCard title="Avg # of Coffees"></StatCard>
-        <StatCard title="Daily Cost ($)"></StatCard>
-        <StatCard title="Total Cost ($)"></StatCard>
+        <StatCard title="Avg # of Coffees">
+          <p>
+            <span className="stat-text">{stats.average_coffees}</span>mg
+          </p>
+        </StatCard>
+        <StatCard title="Daily Cost ($)">
+          <p>
+            $ <span className="stat-text">{stats.daily_cost}</span>
+          </p>
+        </StatCard>
+        <StatCard title="Total Cost ($)">
+          <p>
+            $ <span className="stat-text">{stats.total_cost}</span>
+          </p>
+        </StatCard>
       </div>
     </>
   );
