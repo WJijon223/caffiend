@@ -41,8 +41,10 @@ export function AuthProvider(props) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log(`CURRENT USER: ${user}`);
       // if there is no user, empty the user state and return from this listener
       if (!user) {
+        console.log(`No active user`);
         return;
       }
 
@@ -55,7 +57,7 @@ export function AuthProvider(props) {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
 
-        const firebaseData = {};
+        let firebaseData = {};
         if (docSnap.exists()) {
           console.log("Found user data");
           firebaseData = docSnap.data();
