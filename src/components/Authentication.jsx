@@ -1,27 +1,30 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
-export default function Authentication() {
+export default function Authentication(props) {
   const [isRegistration, setIsRegistration] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [warningMessage, setWarningMessage] = useState(null);
 
   const { signUp, login } = useAuth();
+  const { handleCloseModal } = props;
 
   async function handleAuthenticate() {
-    if (
-      !email ||
-      !email.includes("a") ||
-      !password ||
-      password.length < 6 ||
-      isAuthenticating
-    ) {
+    if (isAuthenticating) {
+      return;
+    }
+    if (!email || !email.includes("a") || !password || password.length < 6) {
+      setWarningMessage(
+        `Please enter a valid email and a password that is at least 6 characters long`
+      );
       return;
     }
 
     try {
       setIsAuthenticating(true);
+      setWarningMessage(null);
 
       if (isRegistration) {
         // register a user
@@ -30,7 +33,9 @@ export default function Authentication() {
         // login a user
         await login(email, password);
       }
+      handleCloseModal();
     } catch (err) {
+      setWarningMessage(err.message);
       console.log(err.message);
     } finally {
       setIsAuthenticating(false);
@@ -41,6 +46,7 @@ export default function Authentication() {
     <>
       <h2 className="sign-up-text">{isRegistration ? "Sign Up" : "Login"}</h2>
       <p>{isRegistration ? "Create an account!" : "Sign into your account!"}</p>
+      {warningMessage && <p>❌ {warningMessage}</p>}
       <input
         value={email}
         onChange={(e) => {
